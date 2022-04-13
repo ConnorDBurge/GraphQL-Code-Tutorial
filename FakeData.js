@@ -61,6 +61,34 @@ const UsersList = [
     }
 ]
 
+const MovieList = [
+    {
+        id: 1,
+        name: "Avengers Endgame",
+        releaseYear: 2019,
+        isInTheaters: true
+    },
+    {
+        id: 2,
+        name: "Interstellar",
+        releaseYear: 2007,
+        isInTheaters: true
+    },
+    {
+        id: 3,
+        name: "Superbad",
+        releaseYear: 2009,
+        isInTheaters: true
+    },
+    {
+        id: 4,
+        name: "Napoleon Dynamite",
+        releaseYear: 2035,
+        isInTheaters: false
+    }
+]
+
 module.exports = {
-    UsersList
+    UsersList,
+    MovieList
 }
