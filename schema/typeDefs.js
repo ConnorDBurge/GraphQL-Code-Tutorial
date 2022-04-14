@@ -7,7 +7,7 @@ const typeDefs = gql`
         name: String!
         username: String!
         age: Int!
-        nationality: Nationality!
+        nationality: Nationality
         friends: [User] 
         favoriteMovies: [Movie]
     }
@@ -32,6 +32,24 @@ const typeDefs = gql`
         user(id: ID!): User!
         movies: [Movie!]!
         movie(name: String!): Movie!
+    }
+
+    input CreateUserInput {
+        name: String!
+        username: String!
+        age: Int!
+        nationality: Nationality = BRAZIL # default value
+    }
+
+    input UpdateUserNameInput {
+        id: ID!
+        newUsername: String!
+    }
+
+    type Mutation {
+        createUser(input: CreateUserInput!): User
+        updateUserName(input: UpdateUserNameInput!): User
+        deleteUser(id: ID!): User
     }
 `;
 

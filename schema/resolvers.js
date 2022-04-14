@@ -32,6 +32,27 @@ const resolvers = {
                 return movie.releaseYear >= 2000 && movie.releaseYear <= 2010
             })
         }
+    },
+
+    Mutation: {
+        createUser: (parent, args) => {
+            const user = args.input
+            const lastId = UsersList[UsersList.length - 1].id
+            user.id = lastId + 1;
+            UsersList.push(user);
+            return user;
+        },
+        updateUserName: (parent, args) => {
+            const { id, newUsername } = args.input;
+            const user = _.find(UsersList, { id: Number(id) })
+            user.username = newUsername;
+            return user;
+        },
+        deleteUser: (parent, args) => {
+            const id = Number(args.id);
+            _.remove(UsersList, { id: id })
+            return null
+        }
     }
 }
 
