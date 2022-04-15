@@ -1,5 +1,5 @@
-import React from 'react';
-import { useQuery, gql } from "@apollo/client";
+import React, { useState } from 'react';
+import { useQuery, useLazyQuery, gql } from "@apollo/client";
 
 const QUERY_ALL_USERS = gql`
 
@@ -24,13 +24,33 @@ const QUERY_ALL_MOVIES = gql`
             isInTheaters
         }
     }
+`;
 
+const QUERY_MOVIE = gql`
+
+    query Movie($nameInput: String!) {
+        movie(name: $nameInput) {
+            id
+            name
+            releaseYear
+            isInTheaters
+        }
+    }
 `;
 
 const DisplayData = () => {
 
     const { data: userData, loading: userLoading, error: userError } = useQuery(QUERY_ALL_USERS);
     const { data: movieData, loading: movieLoading, error: movieError } = useQuery(QUERY_ALL_MOVIES);
+    const [fetchMovie, { data: fetchedMovieData, error: fetchedMovieError }] = useLazyQuery(QUERY_MOVIE);
+
+    const [movieSearch, setMovieSearch] = useState();
+
+    if (fetchedMovieError) {
+        console.error(fetchedMovieError)
+    } else {
+        console.log(fetchedMovieData)
+    }
 
     // if (userLoading) {
     //     return (
@@ -61,6 +81,18 @@ const DisplayData = () => {
                     </div>
                 )
             })}
+
+            <div>
+                <input type="text" placeholder="Interstellar" onChange={(event) => setMovieSearch(event.target.value)} />
+                <button type="button" onClick={() => { fetchMovie({ variables: { nameInput: movieSearch } }) }}>Fetch Data</button>
+                <div>
+                    {fetchedMovieData &&
+                        <div>
+                            <h1>{fetchedMovieData.movie.name}</h1>
+                            <h1>{fetchedMovieData.movie.releaseYear}</h1>
+                        </div>}
+                </div>
+            </div>
         </div>
     );
 }
